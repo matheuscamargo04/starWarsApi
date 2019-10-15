@@ -2,14 +2,14 @@ package com.starWarsApis.starWarsApis.web.dto;
 
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class PeopleResponseDTO {
 
 	private String name;
 	private Long height;
-	private Long mass;
+	private String mass;
 	private String hairColor;
 	private String skinColor;
 	private String eyeColor;
@@ -17,5 +17,5 @@ public class PeopleResponseDTO {
 	private String gender;
 	private List<String> homeWorld;
 	private List<String> species;
-
+	
 }

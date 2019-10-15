@@ -1,8 +1,8 @@
 package com.starWarsApis.starWarsApis.web.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class SpeciesResponseDTO {
 
 	private String name;
