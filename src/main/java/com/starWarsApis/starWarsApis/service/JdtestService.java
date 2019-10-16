@@ -1,45 +1,43 @@
 package com.starWarsApis.starWarsApis.service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.starWarsApis.starWarsApis.domain.Endpoints;
+import com.starWarsApis.starWarsApis.util.RestCallUtils;
 import com.starWarsApis.starWarsApis.web.dto.FilmResponseDTO;
 import com.starWarsApis.starWarsApis.web.dto.PeopleResponseDTO;
 
 @Service
 public class JdtestService {
 
-	@Autowired
-	private RestTemplate rest;
+	private FilmResponseDTO getSpeciesFromFilm(Long filmId) {
 
-	private Set<PeopleResponseDTO> getCharactersFromFilm(Long filmId) {
+		return (FilmResponseDTO) RestCallService.call(RestCallUtils.composeUrl(filmId, Endpoints.FILM),
+				FilmResponseDTO.class, Endpoints.FILM);
 
-		String urlFilm = "https://swapi.co/api/films/" + filmId;
-		FilmResponseDTO filmDTO = rest.getForObject(urlFilm, FilmResponseDTO.class);
-		
-		return filmDTO.getCharacters().stream().map(p -> rest.getForObject(p, PeopleResponseDTO.class)).collect(Collectors.toSet());
 	}
-	
+
 	private String getSpecieFromCharacter(Long idCharacter) {
-		
-		String urlCharacter = "https://swapi.co/api/people/" + idCharacter;
-		return rest.getForObject(urlCharacter, PeopleResponseDTO.class).getSpecies().get(0);
-		
+
+		PeopleResponseDTO peopleDTO = (PeopleResponseDTO) RestCallService.call(
+				RestCallUtils.composeUrl(idCharacter, Endpoints.PEOPLE), PeopleResponseDTO.class, Endpoints.PEOPLE);
+
+		return peopleDTO.getSpecies().get(0);
+
 	}
-	
-	public List<String> getCharactersByTheSpecie(Long idFilm, Long idCharacter){
-		
+
+	public List<String> getCharactersByTheSpecie(Long filmId, Long idCharacter) {
+
 		String specie = getSpecieFromCharacter(idCharacter);
-		
-		Set<PeopleResponseDTO> charactersFromFilm = getCharactersFromFilm(idFilm);
-		
-		List<PeopleResponseDTO> peoples = charactersFromFilm.stream().filter(c -> c.getSpecies().get(0).equals(specie)).collect(Collectors.toList());
-		
+
+		FilmResponseDTO speciesFromFilm = getSpeciesFromFilm(filmId);
+
+		List<PeopleResponseDTO> peoples = speciesFromFilm.getSpecies().stream().filter(p -> p.equals(specie))
+				.collect(Collectors.toList());
+
 		return peoples.stream().map(PeopleResponseDTO::getName).collect(Collectors.toList());
 	}
 

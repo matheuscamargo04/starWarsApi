@@ -17,5 +17,6 @@ public class PeopleResponseDTO {
 	private String gender;
 	private List<String> homeWorld;
 	private List<String> species;
-	
+	private String url;
+
 }

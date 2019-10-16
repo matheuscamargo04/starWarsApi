@@ -20,13 +20,13 @@ public class JdtestController {
 
 	@GetMapping(value = "/jdtest", produces = "application/json")
 	public GetResponse getJdtest(@RequestParam(name = "film_id") Long filmId,
-			@RequestParam(name = "character_id") Long characterId) {
+			@RequestParam(name = "character_id") Long characterId) throws Exception, RuntimeException {
 
 		List<String> charactersByTheSpecie = service.getCharactersByTheSpecie(filmId, characterId);
-		
+
 		GetResponse response = new GetResponse();
 		response.setCharacters(charactersByTheSpecie);
-		
+
 		return response;
 
 	}

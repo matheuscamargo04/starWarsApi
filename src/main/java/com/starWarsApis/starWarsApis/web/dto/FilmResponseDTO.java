@@ -11,5 +11,6 @@ public class FilmResponseDTO {
 	private Long episode_id;
 	private String director;
 	private List<String> characters;
+	private List<String> species;
 
 }
