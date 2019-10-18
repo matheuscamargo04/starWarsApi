@@ -1,6 +1,7 @@
 package com.starWarsApis.starWarsApis.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -13,11 +14,14 @@ import com.starWarsApis.starWarsApis.web.dto.PeopleResponseDTO;
 @Service
 public class JdtestService {
 
-	private FilmResponseDTO getSpeciesFromFilm(Long filmId) {
+	private Set<PeopleResponseDTO> getCharactersFromFilm(Long filmId) {
 
-		return (FilmResponseDTO) RestCallService.call(RestCallUtils.composeUrl(filmId, Endpoints.FILM),
-				FilmResponseDTO.class, Endpoints.FILM);
+		FilmResponseDTO filmDTO = (FilmResponseDTO) RestCallService
+				.call(RestCallUtils.composeUrl(filmId, Endpoints.FILM), FilmResponseDTO.class, Endpoints.FILM);
 
+		return filmDTO.getCharacters().stream()
+				.map(p -> (PeopleResponseDTO) RestCallService.call(p, PeopleResponseDTO.class, Endpoints.PEOPLE))
+				.collect(Collectors.toSet());
 	}
 
 	private String getSpecieFromCharacter(Long idCharacter) {
@@ -29,13 +33,13 @@ public class JdtestService {
 
 	}
 
-	public List<String> getCharactersByTheSpecie(Long filmId, Long idCharacter) {
+	public List<String> getCharactersByTheSpecie(Long idFilm, Long idCharacter) {
 
 		String specie = getSpecieFromCharacter(idCharacter);
 
-		FilmResponseDTO speciesFromFilm = getSpeciesFromFilm(filmId);
+		Set<PeopleResponseDTO> charactersFromFilm = getCharactersFromFilm(idFilm);
 
-		List<PeopleResponseDTO> peoples = speciesFromFilm.getSpecies().stream().filter(p -> p.equals(specie))
+		List<PeopleResponseDTO> peoples = charactersFromFilm.stream().filter(c -> c.getSpecies().get(0).equals(specie))
 				.collect(Collectors.toList());
 
 		return peoples.stream().map(PeopleResponseDTO::getName).collect(Collectors.toList());

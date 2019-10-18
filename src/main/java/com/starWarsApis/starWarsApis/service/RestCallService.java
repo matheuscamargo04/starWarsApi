@@ -16,7 +16,7 @@ import com.starWarsApis.starWarsApis.util.RestCallUtils;
 @Service
 public class RestCallService {
 
-	public static <T> Object call(String url, Class<T> dtoClass, Endpoints endpoint) {
+	public static <T> Object call(String url, Class<T> dtoClass, Endpoints endpoint) throws RuntimeException {
 
 		final String encoding = "utf-8";
 

@@ -10,10 +10,8 @@ import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
-
 import com.starWarsApis.starWarsApis.domain.Endpoints;
+import com.starWarsApis.starWarsApis.exceptions.NotFoundException;
 
 public class RestCallUtils {
 
@@ -25,7 +23,7 @@ public class RestCallUtils {
 		try {
 			url = new URL(filmUrl);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e.getCause());
 		}
 
 		try {
@@ -38,8 +36,7 @@ public class RestCallUtils {
 			if (con.getResponseCode() != 200) {
 
 				if (con.getResponseCode() == 404) {
-					throw NotFound.create(HttpStatus.NOT_FOUND, "Response not found for request " + filmUrl + ".", null,
-							null, null);
+					throw new NotFoundException("Response not found for request " + filmUrl + ".");
 
 				} else {
 					throw new RuntimeException(
@@ -68,6 +65,7 @@ public class RestCallUtils {
 			}
 
 		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
 

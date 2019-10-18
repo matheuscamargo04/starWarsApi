@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.starWarsApis.starWarsApis.exceptions.NotFoundException;
 import com.starWarsApis.starWarsApis.service.JdtestService;
 import com.starWarsApis.starWarsApis.web.dto.GetResponse;
 
@@ -20,7 +21,7 @@ public class JdtestController {
 
 	@GetMapping(value = "/jdtest", produces = "application/json")
 	public GetResponse getJdtest(@RequestParam(name = "film_id") Long filmId,
-			@RequestParam(name = "character_id") Long characterId) throws Exception, RuntimeException {
+			@RequestParam(name = "character_id") Long characterId) throws NotFoundException, RuntimeException {
 
 		List<String> charactersByTheSpecie = service.getCharactersByTheSpecie(filmId, characterId);
 

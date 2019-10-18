@@ -8,6 +8,5 @@ import lombok.Data;
 public class GetResponse {
 
 	private List<String> characters;
-	private List<String> urls;
 
 }

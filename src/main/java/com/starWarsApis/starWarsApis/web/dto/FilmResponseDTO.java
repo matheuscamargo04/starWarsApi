@@ -2,9 +2,9 @@ package com.starWarsApis.starWarsApis.web.dto;
 
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class FilmResponseDTO {
 
 	private String title;
