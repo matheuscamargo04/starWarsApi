@@ -2,15 +2,16 @@ package com.starWarsApis.starWarsApis.web.dto;
 
 import java.util.List;
 
-import lombok.Getter;
-
-@Getter
 public class FilmResponseDTO {
 
-	private String title;
-	private Long episode_id;
-	private String director;
 	private List<String> characters;
-	private List<String> species;
+
+	public List<String> getCharacters() {
+		return characters;
+	}
+
+	public void setCharacters(List<String> characters) {
+		this.characters = characters;
+	}
 
 }
